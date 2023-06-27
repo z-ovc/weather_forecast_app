@@ -22,8 +22,17 @@ st.subheader(f"{option} for next {days} in place of {lat},{lon}")
 # dates, temprature = get_data(days)
 
 
-data = get_data(lat,lon,days,option)
 
-figure = px.line(x=dates, y=temprature , labels={"x":"Date","y":"temprature"})
-st.plotly_chart(figure)
+if lat and lon:
+    filtered_data = get_data(lat,lon,days)
 
+    if option =="temprature":
+        temprature = [dict["main"]["temp"] for dict in filtered_data]
+        dates = [dict["dt_txt"] for dict in filtered_data]
+        figure = px.line(x=dates, y=temprature , labels={"x":"Date","y":"temprature"})
+        st.plotly_chart(figure)
+
+    if option =="sky":
+        filtered_data = [dict["weather"][0]["main"] for dict in filtered_data]
+        image = f"images/{filtered_data}.png"
+        st.image(image)
