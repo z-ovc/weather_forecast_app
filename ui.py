@@ -9,7 +9,6 @@ lat, lon = st.text_input("place: lat: "),st.text_input("place: lon: ")
 days = st.slider("Forecast days", min_value=1, max_value=5, help="Select number for days to forecast")
 
 
-
 option = st.selectbox("select data to view",("temprature","sky"))
 st.subheader(f"{option} for next {days} in place of {lat},{lon}")
 
@@ -33,6 +32,7 @@ if lat and lon:
         st.plotly_chart(figure)
 
     if option =="sky":
+        images = {"Clear":"images/clear.png","Clouds":"images/cloud.png","Rain":"images/clear.png","Snow":"images/snow.png"}
         filtered_data = [dict["weather"][0]["main"] for dict in filtered_data]
-        image = f"images/{filtered_data}.png"
-        st.image(image)
+        imagepaths = [images[condition] for condition in filtered_data]
+        st.image(imagepaths,width=110)
